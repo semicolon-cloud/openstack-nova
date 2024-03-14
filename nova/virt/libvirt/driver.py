@@ -178,7 +178,7 @@ VOLUME_DRIVERS = {
     'iser': 'nova.virt.libvirt.volume.iser.LibvirtISERVolumeDriver',
     'local': 'nova.virt.libvirt.volume.volume.LibvirtVolumeDriver',
     'fake': 'nova.virt.libvirt.volume.volume.LibvirtFakeVolumeDriver',
-    'rbd': 'nova.virt.libvirt.volume.net.LibvirtNetVolumeDriver',
+    'rbd': 'nova.virt.libvirt.volume.rbd.LibvirtRBDVolumeDriver',
     'nfs': 'nova.virt.libvirt.volume.nfs.LibvirtNFSVolumeDriver',
     'smbfs': 'nova.virt.libvirt.volume.smbfs.LibvirtSMBFSVolumeDriver',
     'fibre_channel': 'nova.virt.libvirt.volume.fibrechannel.LibvirtFibreChannelVolumeDriver',  # noqa:E501
