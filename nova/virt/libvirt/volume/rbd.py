@@ -127,6 +127,7 @@ class LibvirtRBDVolumeDriver(libvirt_volume.LibvirtBaseVolumeDriver):
         """Attach the volume to instance_name."""
 
         LOG.debug("Calling os-brick to attach RBD Volume", instance=instance)
+        connection_info['data']['do_local_attach'] = True
         device_info = self.connector.connect_volume(connection_info['data'])
         LOG.debug("Attached RBD volume %s", device_info, instance=instance)
 
