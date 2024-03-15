@@ -252,7 +252,7 @@ class Mount(object):
         # NOTE(mikal): note that the check_exit_code kwarg here only refers to
         # resize2fs, not the precursor e2fsck. Yes, I agree it's confusing.
         try:
-            nova.privsep.fs.unprivileged_e2fsck(self.mapped_device)
+            nova.privsep.fs.unprivileged_e2fsck(self.mapped_device, '-fy')
         except processutils.ProcessExecutionError as exc:
             LOG.debug("Checking the file system with e2fsck has failed, "
                       "the resize will be aborted. (%s)", exc)
