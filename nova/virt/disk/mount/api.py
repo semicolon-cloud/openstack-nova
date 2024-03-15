@@ -247,6 +247,9 @@ class Mount(object):
         """Mount the device into the file system."""
         LOG.debug("Mount %(dev)s on %(dir)s",
                   {'dev': self.mapped_device, 'dir': self.mount_dir})
+
+        nova.privsep.fs.resize2fs(self.mapped_device, True)
+
         out, err = nova.privsep.fs.mount(None, self.mapped_device,
                                          self.mount_dir, None)
         if err:
@@ -254,11 +257,6 @@ class Mount(object):
             LOG.debug(self.error)
             return False
 
-        out, err = nova.privsep.fs.resize2fs(self.mapped_device, True)
-
-        if err:
-            self.error = _('Failed to resize filesystem: %s') % err
-            LOG.warning(self.error)
 
         self.mounted = True
         return True
