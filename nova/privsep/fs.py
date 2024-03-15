@@ -37,12 +37,6 @@ def mount(fstype, device, mountpoint, options):
     mount_cmd.extend([device, mountpoint])
     return processutils.execute(*mount_cmd)
 
-@nova.privsep.sys_admin_pctxt.entrypoint
-def resize2fs(device):
-    mount_cmd = ['resize2fs']
-    mount_cmd.extend([device])
-    return processutils.execute(*mount_cmd)
-
 
 @nova.privsep.sys_admin_pctxt.entrypoint
 def umount(mountpoint):
