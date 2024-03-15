@@ -11183,8 +11183,9 @@ class LibvirtDriver(driver.ComputeDriver):
 
         volume_devices = set()
         for vol in block_device_mapping:
-            disk_dev = vol['mount_device'].rpartition("/")[2]
-            volume_devices.add(disk_dev)
+            if vol['mount_device'] is not None and '/' in vol['mount_device']:
+                disk_dev = vol['mount_device'].rpartition("/")[2]
+                volume_devices.add(disk_dev)
 
         disk_info = []
 
