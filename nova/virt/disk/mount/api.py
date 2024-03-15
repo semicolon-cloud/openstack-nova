@@ -16,6 +16,7 @@
 import os
 import time
 
+from oslo_concurrency import processutils
 from oslo_log import log as logging
 from oslo_service import loopingcall
 from oslo_utils import importutils
@@ -248,7 +249,15 @@ class Mount(object):
         LOG.debug("Mount %(dev)s on %(dir)s",
                   {'dev': self.mapped_device, 'dir': self.mount_dir})
 
-        nova.privsep.fs.resize2fs(self.mapped_device, True)
+        # NOTE(mikal): note that the check_exit_code kwarg here only refers to
+        # resize2fs, not the precursor e2fsck. Yes, I agree it's confusing.
+        try:
+            nova.privsep.fs.unprivileged_e2fsck(self.mapped_device)
+        except processutils.ProcessExecutionError as exc:
+            LOG.debug("Checking the file system with e2fsck has failed, "
+                      "the resize will be aborted. (%s)", exc)
+        else:
+            nova.privsep.fs.unprivileged_resize2fs(self.mapped_device, True)
 
         out, err = nova.privsep.fs.mount(None, self.mapped_device,
                                          self.mount_dir, None)
